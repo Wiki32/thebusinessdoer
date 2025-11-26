@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | The Business Doer</title>
+  <meta name="description" content="Explore The Business Doer articles: marketing strategy, financial frameworks, sales, operations, and leadership in one hub.">
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <a class="navbar-brand" href="index.html">
+        <span>The Business Doer</span>
+      </a>
+      <nav aria-label="Main menu">
+        <a href="index.html">Home</a>
+        <a href="blog.html" aria-current="page">Blog</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <a class="btn-primary" href="coming-soon.html">Start My Business Plan</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" style="margin-top:3rem;">
+      <div class="section-header">
+        <div>
+          <p class="hero-tag">Living library</p>
+          <h1>Ideas ready to implement</h1>
+          <p style="color:var(--muted); max-width:640px;">Every article includes templates, metrics, and watchouts so you can adapt each recommendation to your business.</p>
+        </div>
+      </div>
+
+      <div class="blog-search" role="search">
+        <div class="search-row">
+          <input type="search" placeholder="Search by keyword, industry, or area..." aria-label="Search articles" data-search>
+          <span class="search-meta">Results: <strong data-results-count>0</strong></span>
+        </div>
+        <div class="filter-row" data-filter-panel>
+          <div class="filter-row-head">
+            <p class="filter-label">Filter by category</p>
+            <button type="button" class="filter-clear" data-clear-filters aria-disabled="true" disabled>Clear filters</button>
+          </div>
+          <div class="filter-chips" data-category-filters></div>
+        </div>
+      </div>
+
+      <div class="article-list" data-blog-list></div>
+
+      <div class="empty-state" data-empty-state>
+        <p>We couldn't find a match. Try another keyword or explore the featured categories.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>© <span id="current-year"></span> The Business Doer · Built for people who drive the business.</p>
+      <div class="footer-links">
+        <a href="terms.html">Terms and Conditions</a>
+        <a href="aviso-legal.html">Legal Notice</a>
+        <a href="politica-cookies.html">Cookie Policy</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private panel | The Business Doer</title>
+  <meta name="description" content="Internal panel to monitor articles and launches for The Business Doer.">
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <a class="navbar-brand" href="index.html">
+        <span>The Business Doer</span>
+      </a>
+      <nav aria-label="Main menu">
+        <a href="index.html">Home</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <a class="btn-primary" href="coming-soon.html">Start My Business Plan</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="admin-panel" data-admin-panel hidden aria-hidden="true">
+      <div class="admin-header">
+        <div>
+          <p class="hero-tag">Internal use</p>
+          <h1>Private article panel</h1>
+          <p class="admin-lede">Monitor the editorial pipeline without exposing it to the public site. Update each publication status and prep upcoming launches.</p>
+        </div>
+      </div>
+
+      <div class="admin-summary">
+        <article class="card admin-card">
+          <p class="admin-card-label">Published articles</p>
+          <p class="admin-card-value" data-count="published">0</p>
+          <p class="admin-card-note">Live on blog with SEO aligned.</p>
+        </article>
+        <article class="card admin-card">
+          <p class="admin-card-label">Editing</p>
+          <p class="admin-card-value" data-count="editing">0</p>
+          <p class="admin-card-note">Waiting on content QA.</p>
+        </article>
+        <article class="card admin-card">
+          <p class="admin-card-label">Priority backlog</p>
+          <p class="admin-card-value" data-count="draft">0</p>
+          <p class="admin-card-note">Ready for creative brief.</p>
+        </article>
+      </div>
+
+      <div class="admin-table-wrapper">
+        <div class="admin-table-header">
+          <div>
+            <p class="hero-tag">Editorial status</p>
+            <h2>Tracking live articles</h2>
+            <p class="admin-lede">Data is updated manually at the end of each sprint.</p>
+          </div>
+        </div>
+        <div class="admin-table-scroll" role="region" aria-label="Article control table">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Article</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Owner</th>
+                <th>Last update</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody data-article-table>
+              <tr data-empty-row>
+                <td colspan="7" style="text-align:center; color:var(--muted); padding:2rem;">
+                  No articles saved from this panel yet.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <section class="admin-editor" data-article-editor>
+        <div class="editor-header">
+          <div>
+            <p class="hero-tag">Advanced editor</p>
+            <h2>Create or edit articles</h2>
+            <p class="admin-lede">Apply rich formatting, embed images, and publish directly to the blog.</p>
+          </div>
+          <div class="editor-header-actions">
+            <button class="btn-primary ghost" type="button" data-editor-new>New article</button>
+          </div>
+        </div>
+
+        <form id="article-editor-form" class="editor-form" autocomplete="off">
+          <div class="editor-meta-grid">
+            <label>
+              <span>Title</span>
+              <input type="text" id="article-title" name="title" placeholder="e.g., PLG pricing playbook" required>
+            </label>
+            <label>
+              <span>Slug</span>
+              <input type="text" id="article-slug" name="slug" placeholder="plg-pricing-playbook" required>
+            </label>
+            <label>
+              <span>Category</span>
+              <select id="article-category" name="category" required>
+                <option value="">Select...</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Finance">Finance</option>
+                <option value="Revenue">Revenue</option>
+                <option value="Sales">Sales</option>
+                <option value="Operations">Operations</option>
+                <option value="Strategy">Strategy</option>
+                <option value="HR">HR</option>
+              </select>
+            </label>
+            <label>
+              <span>Status</span>
+              <select id="article-status" name="status">
+                <option value="draft">Draft</option>
+                <option value="editing">Editing</option>
+                <option value="qa">QA/Review</option>
+                <option value="live">Published</option>
+              </select>
+            </label>
+            <label>
+              <span>Read time (min)</span>
+              <input type="number" id="article-readtime" name="readTime" min="1" max="60" value="8">
+            </label>
+            <label>
+              <span>Owner</span>
+              <input type="text" id="article-owner" name="owner" placeholder="Laura Alba">
+            </label>
+            <label>
+              <span>Cover or main image</span>
+              <div class="cover-upload">
+                <button type="button" class="btn-secondary" data-cover-trigger>Upload image</button>
+                <span class="cover-upload-status" data-cover-status>No image uploaded</span>
+                <input type="file" accept="image/*" data-cover-input hidden>
+                <input type="hidden" id="article-cover" name="cover">
+              </div>
+            </label>
+            <label>
+              <span>Keywords</span>
+              <input type="text" id="article-keywords" name="keywords" placeholder="growth, pricing, plg">
+            </label>
+          </div>
+
+          <label class="editor-field">
+            <span>Summary (shown on the blog)</span>
+            <textarea id="article-summary" name="summary" rows="3" placeholder="A short description of the article..." required></textarea>
+          </label>
+
+          <label class="editor-field">
+            <span>Internal notes</span>
+            <textarea id="article-notes" name="notes" rows="2" placeholder="Checklist, pending items, resources..."></textarea>
+          </label>
+
+          <div class="editor-toolbar" role="toolbar" aria-label="Text formatting">
+            <button type="button" data-command="bold"><span>Bold</span></button>
+            <button type="button" data-command="italic"><span>Italic</span></button>
+            <button type="button" data-command="underline"><span>Underline</span></button>
+            <button type="button" data-command="justifyLeft" data-align aria-label="Align left" aria-pressed="true">
+              <span class="align-icon align-left" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </button>
+            <button type="button" data-command="justifyCenter" data-align aria-label="Center text" aria-pressed="false">
+              <span class="align-icon align-center" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </button>
+            <button type="button" data-command="justifyRight" data-align aria-label="Align right" aria-pressed="false">
+              <span class="align-icon align-right" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </button>
+            <button type="button" data-command="justifyFull" data-align aria-label="Justify text" aria-pressed="false">
+              <span class="align-icon align-justify" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </button>
+            <button type="button" data-command="insertUnorderedList">• List</button>
+            <button type="button" data-command="insertOrderedList">1. List</button>
+            <button type="button" data-action="tab">Tab</button>
+            <button type="button" data-command="formatBlock" data-value="H1">H1</button>
+            <button type="button" data-command="formatBlock" data-value="H2">H2</button>
+            <button type="button" data-command="formatBlock" data-value="H3">H3</button>
+            <button type="button" data-command="formatBlock" data-value="blockquote">Paragraph</button>
+            <button type="button" data-action="font-up">A+</button>
+            <button type="button" data-action="font-down">A-</button>
+            <button type="button" data-action="link">Link</button>
+            <button type="button" data-action="color" aria-label="Text color">
+              <span class="toolbar-icon swatch"></span>
+              Color
+            </button>
+            <button type="button" data-action="image">Upload image</button>
+            <button type="button" data-command="removeFormat">Clear formatting</button>
+          </div>
+
+          <input type="file" accept="image/*" data-image-upload hidden>
+          <input type="color" value="#004c99" data-color-picker class="color-picker-hidden" aria-hidden="true" tabindex="-1">
+
+          <div class="editor-canvas" id="article-body" data-editor-body contenteditable="true" aria-label="Article content" tabindex="0"></div>
+
+          <div class="editor-actions">
+            <div class="editor-actions-left">
+              <span class="editor-status" data-editor-status></span>
+            </div>
+            <div class="editor-actions-right">
+              <button type="button" class="btn-secondary" data-editor-preview>Preview</button>
+              <button class="btn-primary editor-save" type="submit">Save changes</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+    </section>
+  </main>
+
+  <div class="admin-lock" id="admin-lock" role="dialog" aria-modal="true" aria-labelledby="lock-title">
+    <div class="admin-lock-card">
+      <p class="hero-tag">Protected panel</p>
+      <h1 id="lock-title">Restricted access</h1>
+      <p class="admin-lede">Enter the team's internal code to unlock the private panel.</p>
+      <form class="admin-lock-form" autocomplete="off">
+        <label for="admin-code">Private code</label>
+        <input type="password" id="admin-code" name="password" placeholder="••••••••" autocomplete="current-password" required>
+        <button class="btn-primary" type="submit">Unlock</button>
+        <p class="lock-status" data-lock-status aria-live="polite"></p>
+      </form>
+      <p class="admin-lock-hint">Need help? Email <a href="mailto:ops@thebusinessdoer.com">ops@thebusinessdoer.com</a>.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <p>© <span id="current-year"></span> The Business Doer · Built for people who drive the business.</p>
+      <div class="footer-links">
+        <a href="terms.html">Terms and Conditions</a>
+        <a href="aviso-legal.html">Legal Notice</a>
+        <a href="politica-cookies.html">Cookie Policy</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

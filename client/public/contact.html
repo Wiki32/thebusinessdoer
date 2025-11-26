@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | The Business Doer</title>
+  <meta name="description" content="Get in touch with The Business Doer to collaborate, suggest topics, or request tactical business support.">
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <a class="navbar-brand" href="index.html">
+        <span>The Business Doer</span>
+      </a>
+      <nav aria-label="Main menu">
+        <a href="index.html">Home</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html" aria-current="page">Contact</a>
+      </nav>
+      <a class="btn-primary" href="coming-soon.html">Start My Business Plan</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" style="margin-top:3rem;">
+      <div class="section-header">
+        <div>
+          <p class="hero-tag">Let's talk</p>
+          <h1>Tell us what you're building.</h1>
+          <p style="color:var(--muted); max-width:620px;">Need a workshop, targeted support, or simply want to share a business story? We respond within 24 hours with the next steps.</p>
+        </div>
+      </div>
+
+      <div class="contact-wrapper">
+        <form id="contact-form" class="contact-form">
+          <div>
+            <label for="name">Full name</label>
+            <input id="name" name="name" type="text" placeholder="Alex Carter" required>
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="alex@company.com" required>
+          </div>
+          <div>
+            <label for="company">Company</label>
+            <input id="company" name="company" type="text" placeholder="Company name" required>
+          </div>
+          <div>
+            <label for="topic">Area of interest</label>
+            <select id="topic" name="topic" required>
+              <option value="">Select an option</option>
+              <option>Marketing & Growth</option>
+              <option>Finance & Strategy</option>
+              <option>Sales & Revenue Ops</option>
+              <option>Operations & Product</option>
+            </select>
+          </div>
+          <div>
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell us about the challenge you want to solve" required></textarea>
+          </div>
+          <button class="btn-primary" type="submit">Send message</button>
+          <p id="form-status" aria-live="polite"></p>
+        </form>
+
+        <div class="contact-info">
+          <div>
+            <strong>Memberships & collaborations</strong>
+            <p>partners@thebusinessdoer.com</p>
+          </div>
+          <div>
+            <strong>Consulting & workshops</strong>
+            <p>agenda@thebusinessdoer.com</p>
+          </div>
+          <div>
+            <strong>Follow us</strong>
+            <p>LinkedIn · Weekly newsletter · Private communities</p>
+          </div>
+          <div>
+            <strong>Base</strong>
+            <p>Madrid · Barcelona · Mexico City · Remote</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>© <span id="current-year"></span> The Business Doer · Built for people who drive the business.</p>
+      <div class="footer-links">
+        <a href="terms.html">Terms and Conditions</a>
+        <a href="aviso-legal.html">Legal Notice</a>
+        <a href="politica-cookies.html">Cookie Policy</a>
+        <a href="contact.html" aria-current="page">Contact</a>
+      </div>
+    </div>
+  </footer>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

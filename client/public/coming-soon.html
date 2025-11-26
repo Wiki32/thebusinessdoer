@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Plan | Coming Soon | The Business Doer</title>
+  <meta name="description" content="Soon you'll launch your guided business plan from The Business Doer. We're polishing the experience and will release it shortly.">
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <a class="navbar-brand" href="index.html">
+        <span>The Business Doer</span>
+      </a>
+      <nav aria-label="Main menu">
+        <a href="index.html">Home</a>
+        <a href="blog.html">Blog</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <a class="btn-primary" href="coming-soon.html" aria-current="page">Start My Business Plan</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" style="margin:3rem auto; max-width:820px; text-align:center;">
+      <p class="hero-tag">Your business plan</p>
+      <h1 class="hero-title" style="font-size:clamp(2.5rem,4vw,3.5rem); margin-bottom:0.75rem;">Coming soon</h1>
+      <p style="color:var(--muted); max-width:700px; margin:0 auto;">Leave your email and choose if you want to receive updates. We'll notify you as soon as access opens.</p>
+
+      <form id="coming-soon-form" class="card no-hover" style="margin-top:2rem; padding:2rem; display:grid; gap:1rem; justify-items:start;">
+        <label style="display:grid; gap:0.35rem; width:100%; text-align:left;">
+          <span>Email</span>
+          <input class="pill-input" type="email" name="email" placeholder="you@company.com" required>
+        </label>
+        <label style="display:flex; align-items:flex-start; gap:0.5rem; text-align:left;">
+          <input type="checkbox" name="consent" style="margin-top:0.2rem;" required>
+          <span>I agree to receive information and updates about the launch.</span>
+        </label>
+        <button class="btn-primary" type="submit">Keep me posted</button>
+        <p data-coming-status aria-live="polite" style="margin:0; color:var(--muted);"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>© <span id="current-year"></span> The Business Doer · Built for people who drive the business.</p>
+      <div class="footer-links">
+        <a href="terms.html">Terms and Conditions</a>
+        <a href="aviso-legal.html">Legal Notice</a>
+        <a href="politica-cookies.html">Cookie Policy</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+  <script src="assets/js/main.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('coming-soon-form');
+      const status = document.querySelector('[data-coming-status]');
+      if (!form || !status) return;
+
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+        const email = form.email.value.trim();
+        const consent = form.consent.checked;
+
+        if (!email || !consent) {
+          status.textContent = 'Please add your email and accept to continue.';
+          status.style.color = '#c0392b';
+          return;
+        }
+
+        status.textContent = 'You are in! We will notify you as soon as it is live.';
+        status.style.color = '#004c99';
+        form.reset();
+      });
+    });
+  </script>
+</body>
+</html>
