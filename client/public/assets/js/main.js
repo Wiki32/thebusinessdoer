@@ -1,6 +1,69 @@
 const ARTICLE_STORAGE_KEY = 'tbd-article-library';
 const ARTICLE_PREVIEW_KEY = 'tbd-article-preview';
 const COOKIE_PREF_KEY = 'tbd-cookie-preferences';
+const CATEGORY_OPTIONS = [
+  'Marketing',
+  'Finance',
+  'Accounting',
+  'Strategy',
+  'Market Research',
+  'Sales',
+  'Operations',
+  'Human Resources',
+  'Product',
+  'Technology',
+  'AI',
+  'Project Management',
+  'Legal'
+];
+const CATEGORY_TRANSLATIONS = {
+  'marketing & growth': 'Marketing',
+  marketing: 'Marketing',
+  growth: 'Marketing',
+  finanzas: 'Finance',
+  'finanzas y estrategia': 'Finance',
+  'finance & strategy': 'Finance',
+  finance: 'Finance',
+  accounting: 'Accounting',
+  contabilidad: 'Accounting',
+  strategy: 'Strategy',
+  estrategia: 'Strategy',
+  'market research': 'Market Research',
+  research: 'Market Research',
+  technology: 'Technology',
+  tech: 'Technology',
+  tecnologia: 'Technology',
+  'product & technology': 'Technology',
+  ai: 'AI',
+  'a.i.': 'AI',
+  ia: 'AI',
+  'inteligencia artificial': 'AI',
+  ventas: 'Sales',
+  sales: 'Sales',
+  revenue: 'Sales',
+  'sales & revenue operations': 'Sales',
+  'revenue operations': 'Sales',
+  operaciones: 'Operations',
+  productivity: 'Operations',
+  productividad: 'Operations',
+  'productivity & operations': 'Operations',
+  operations: 'Operations',
+  'people & hr': 'Human Resources',
+  people: 'Human Resources',
+  hr: 'Human Resources',
+  'recursos humanos': 'Human Resources',
+  'product & technology': 'Product',
+  product: 'Product',
+  tecnologia: 'Product',
+  technology: 'Product',
+  producto: 'Product',
+  'project management': 'Project Management',
+  project: 'Project Management',
+  juridico: 'Legal',
+  legal: 'Legal',
+  compliance: 'Legal',
+  'legal & compliance': 'Legal'
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   renderDynamicBlogArticles();
@@ -32,8 +95,11 @@ function renderDynamicBlogArticles() {
     card.className = 'card article-card';
     card.dataset.article = '';
     card.dataset.keywords = buildKeywordString(article);
-    const displayCategory = normalizeCategoryName(article.category || 'Article');
-    card.dataset.category = displayCategory;
+    const categories = normalizeCategories(article.categories || article.category);
+    const displayCategory = formatCategoryDisplay(categories);
+    const primaryCategory = categories[0] || 'Article';
+    card.dataset.category = primaryCategory;
+    card.dataset.categories = (categories.length ? categories : [primaryCategory]).join('|');
 
     const link = document.createElement('a');
     link.className = 'article-card-link';
@@ -47,20 +113,9 @@ function renderDynamicBlogArticles() {
     title.textContent = article.title || 'Untitled article';
 
     const summary = document.createElement('p');
-    summary.textContent = article.summary || 'Content created from the private panel.';
+    summary.textContent = article.summary || 'Content added from the article panel.';
 
-    const meta = document.createElement('div');
-    meta.className = 'article-meta';
-
-    const readTime = document.createElement('span');
-    readTime.textContent = `Read time: ${article.readTime || 8} min`;
-
-    const tagPill = document.createElement('span');
-    tagPill.className = 'tag-pill';
-    tagPill.textContent = 'Private panel';
-
-    meta.append(readTime, tagPill);
-    link.append(tag, title, summary, meta);
+    link.append(tag, title, summary);
     card.appendChild(link);
     fragment.appendChild(card);
   });
@@ -78,6 +133,11 @@ function setupArticleSearch() {
   if (!searchInput && !categoryFilters) return;
 
   const selectedCategories = new Set();
+  const getCardCategories = card => {
+    if (!card?.dataset) return [];
+    const raw = card.dataset.categories || card.dataset.category || '';
+    return normalizeCategories(raw);
+  };
 
   const syncClearButton = () => {
     if (!clearFiltersBtn) return;
@@ -103,9 +163,10 @@ function setupArticleSearch() {
 
     articleCards.forEach(card => {
       const keywords = card.dataset.keywords || '';
-      const category = card.dataset.category || '';
       const matchesQuery = !query || keywords.includes(query);
-      const matchesCategory = !selectedCategories.size || selectedCategories.has(category);
+      const categories = getCardCategories(card);
+      const matchesCategory =
+        !selectedCategories.size || categories.some(category => selectedCategories.has(category));
       const matches = matchesQuery && matchesCategory;
       card.style.display = matches ? '' : 'none';
       if (matches) visibleCount += 1;
@@ -124,13 +185,21 @@ function setupArticleSearch() {
     if (!categoryFilters) return;
 
     const articleCards = document.querySelectorAll('[data-article]');
-    const categories = Array.from(
+    const uniqueCategories = Array.from(
       new Set(
         Array.from(articleCards)
-          .map(card => card.dataset.category)
+          .flatMap(card => getCardCategories(card))
           .filter(Boolean)
       )
-    ).sort((a, b) => a.localeCompare(b));
+    );
+
+    const orderedCategories = CATEGORY_OPTIONS.filter(option =>
+      uniqueCategories.includes(option)
+    );
+    const extraCategories = uniqueCategories
+      .filter(category => !CATEGORY_OPTIONS.includes(category))
+      .sort((a, b) => a.localeCompare(b));
+    const categories = [...orderedCategories, ...extraCategories];
 
     categoryFilters.innerHTML = '';
     if (!categories.length) {
@@ -331,7 +400,7 @@ function setupArticleEditor() {
 
   const titleInput = document.getElementById('article-title');
   const slugInput = document.getElementById('article-slug');
-  const categoryInput = document.getElementById('article-category');
+  const categoryInputs = editorSection.querySelectorAll('input[name="categories"]');
   const statusInput = document.getElementById('article-status');
   const readTimeInput = document.getElementById('article-readtime');
   const ownerInput = document.getElementById('article-owner');
@@ -351,6 +420,8 @@ function setupArticleEditor() {
   const imageUploadInput = editorSection.querySelector('[data-image-upload]');
   const colorPickerInput = editorSection.querySelector('[data-color-picker]');
   const colorSwatch = colorButton?.querySelector('.toolbar-icon.swatch');
+  const categoryPanel = editorSection.querySelector('.category-options');
+  const categoryToggle = editorSection.querySelector('[data-category-toggle]');
 
   const fontUpButton = editorSection.querySelector('[data-action="font-up"]');
   const fontDownButton = editorSection.querySelector('[data-action="font-down"]');
@@ -359,6 +430,24 @@ function setupArticleEditor() {
   const alignButtons = editorSection.querySelectorAll('[data-align]');
   const alignButtonsList = Array.from(alignButtons);
   const tableBody = document.querySelector('[data-article-table]');
+
+  const getSelectedCategories = () => {
+    if (!categoryInputs?.length) return [];
+    return Array.from(categoryInputs)
+      .filter(input => input.checked)
+      .map(input => normalizeCategoryName(input.value))
+      .filter(Boolean);
+  };
+
+  const setCategorySelection = categories => {
+    if (!categoryInputs?.length) return;
+    const normalized = normalizeCategories(categories);
+    categoryInputs.forEach(input => {
+      const value = normalizeCategoryName(input.value);
+      input.checked = normalized.includes(value);
+    });
+    syncCategoryToggleState();
+  };
 
   let activeId = null;
   let slugManuallyEdited = false;
@@ -567,6 +656,23 @@ function setupArticleEditor() {
   resizeHandle.addEventListener('mousedown', startImageResize);
   resizeHandle.addEventListener('touchstart', startImageResize, { passive: false });
 
+  const syncCategoryToggleState = () => {
+    if (!categoryToggle || !categoryPanel) return;
+    const isOpen = !categoryPanel.hasAttribute('hidden');
+    categoryToggle.setAttribute('aria-expanded', String(isOpen));
+    categoryToggle.textContent = isOpen ? 'Hide categories' : 'Select categories';
+  };
+
+  categoryToggle?.addEventListener('click', () => {
+    if (!categoryPanel) return;
+    if (categoryPanel.hasAttribute('hidden')) {
+      categoryPanel.removeAttribute('hidden');
+    } else {
+      categoryPanel.setAttribute('hidden', '');
+    }
+    syncCategoryToggleState();
+  });
+
   const mapTextAlignToCommand = alignValue => {
     switch (alignValue) {
       case 'center':
@@ -620,8 +726,13 @@ function setupArticleEditor() {
     if (statusInput) statusInput.value = 'draft';
     setStatusMessage('Editor ready for a new article.');
     if (alignButtonsList.length) {
-      setActiveAlign(alignButtonsList[0]);
+    setActiveAlign(alignButtonsList[0]);
     }
+    setCategorySelection([]);
+    if (categoryPanel) {
+      categoryPanel.setAttribute('hidden', '');
+    }
+    syncCategoryToggleState();
     if (coverInput) {
       coverInput.value = '';
     }
@@ -632,12 +743,21 @@ function setupArticleEditor() {
     hideImageOverlay();
   };
 
+  resetEditor();
+
   const buildArticlePayload = () => {
+    const categories = getSelectedCategories();
+    if (!categories.length) {
+      setStatusMessage('Select at least one category.', '#c0392b');
+      return null;
+    }
+
     const payload = {
       id: activeId || generateArticleId(),
       title: titleInput?.value.trim() || 'Untitled article',
       slug: slugify(slugInput?.value || titleInput?.value || ''),
-      category: categoryInput?.value || 'Article',
+      categories,
+      category: categories[0] || 'Article',
       status: statusInput?.value || 'draft',
       readTime: Number(readTimeInput?.value) || 8,
       owner: ownerInput?.value.trim() || 'TBD team',
@@ -924,7 +1044,7 @@ function setupArticleEditor() {
         slugManuallyEdited = true;
         titleInput.value = article.title || '';
         slugInput.value = article.slug || '';
-        categoryInput.value = article.category || '';
+        setCategorySelection(article.categories || article.category || []);
         statusInput.value = article.status || 'draft';
         readTimeInput.value = article.readTime || 8;
         ownerInput.value = article.owner || '';
@@ -987,15 +1107,23 @@ function setupDynamicArticleView() {
   }
 
   articleLayout.querySelector('[data-article-title]').textContent = article.title || 'Article';
-  const displayCategory = normalizeCategoryName(article.category || 'Article');
+  const displayCategory = formatCategoryDisplay(article.categories || article.category || 'Article');
   articleLayout.querySelector('[data-article-category]').textContent = displayCategory;
   articleLayout.querySelector('[data-article-summary]').textContent = article.summary || '';
   const ownerField = articleLayout.querySelector('[data-article-owner]');
   if (ownerField) {
     ownerField.textContent = article.owner || 'TBD team';
   }
-  articleLayout.querySelector('[data-article-readtime]').textContent = `${article.readTime || 8} min`;
-  articleLayout.querySelector('[data-article-updated]').textContent = formatDateShort(article.updatedAt || article.createdAt);
+
+  const readTimeField = articleLayout.querySelector('[data-article-readtime]');
+  if (readTimeField) {
+    readTimeField.textContent = `${article.readTime || 8} min`;
+  }
+
+  const updatedField = articleLayout.querySelector('[data-article-updated]');
+  if (updatedField) {
+    updatedField.textContent = formatDateShort(article.updatedAt || article.createdAt);
+  }
 
   const cover = articleLayout.querySelector('[data-article-cover]');
   if (cover) {
@@ -1138,21 +1266,35 @@ function slugify(value) {
 
 function normalizeCategoryName(category) {
   if (!category) return '';
-  const key = category.trim().toLowerCase();
-  const translations = {
-    estrategia: 'Strategy',
-    finanzas: 'Finance',
-    ventas: 'Sales',
-    operaciones: 'Operations',
-    'recursos humanos': 'HR'
-  };
-  const mapped = translations[key];
-  return mapped || category;
+  const key = category.toString().trim().toLowerCase();
+  const mapped = CATEGORY_TRANSLATIONS[key];
+  if (mapped) return mapped;
+  const canonical = CATEGORY_OPTIONS.find(option => option.toLowerCase() === key);
+  if (canonical) return canonical;
+  const cleaned = key.replace(/\s+/g, ' ').trim();
+  if (!cleaned) return '';
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+}
+
+function normalizeCategories(raw) {
+  if (!raw) return [];
+  const list = Array.isArray(raw) ? raw : String(raw).split(/[|,]/);
+  const normalized = list
+    .map(value => normalizeCategoryName(value))
+    .filter(Boolean);
+  return Array.from(new Set(normalized));
+}
+
+function formatCategoryDisplay(raw) {
+  const normalized = normalizeCategories(raw);
+  if (!normalized.length) return 'Article';
+  if (normalized.length === 1) return normalized[0];
+  return normalized.join(' · ');
 }
 
 function buildKeywordString(article) {
-  const normalizedCategory = normalizeCategoryName(article.category);
-  return [article.title, normalizedCategory, article.keywords, article.summary]
+  const normalizedCategories = normalizeCategories(article.categories || article.category);
+  return [article.title, normalizedCategories.join(' '), article.keywords, article.summary]
     .filter(Boolean)
     .join(' ')
     .toLowerCase();
@@ -1382,7 +1524,7 @@ function populateAdminTable(articles) {
     articleCell.append(strong, small);
 
     const categoryCell = document.createElement('td');
-    categoryCell.textContent = normalizeCategoryName(article.category || 'Article');
+    categoryCell.textContent = formatCategoryDisplay(article.categories || article.category || 'Article');
 
     const statusCell = document.createElement('td');
     const statusBadge = document.createElement('span');
@@ -1437,7 +1579,7 @@ function applyArticleSeoMetadata(article) {
   const articleTitle = article.title || 'Article';
   const fullTitle = `${articleTitle} | ${baseTitle}`;
   const summary =
-    article.summary || "Content generated from The Business Doer's private panel.";
+    article.summary || "Content generated from The Business Doer's article panel.";
   const currentUrl = window.location.href;
   const keywords = normalizeKeywords(article.keywords);
 
@@ -1455,12 +1597,13 @@ function applyArticleSeoMetadata(article) {
 
   const schemaNode = document.querySelector('[data-article-schema]');
   if (schemaNode) {
+    const primaryCategory = normalizeCategories(article.categories || article.category)[0] || 'Article';
     const schemaPayload = {
       '@context': 'https://schema.org',
       '@type': 'Article',
       headline: articleTitle,
       description: summary,
-      articleSection: normalizeCategoryName(article.category || 'Article'),
+      articleSection: primaryCategory,
       datePublished: article.createdAt || article.updatedAt || new Date().toISOString(),
       dateModified: article.updatedAt || article.createdAt || new Date().toISOString(),
       author: { '@type': 'Person', name: article.owner || 'TBD team' },

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Private panel | The Business Doer</title>
+  <title>Article panel | The Business Doer</title>
   <meta name="description" content="Internal panel to monitor articles and launches for The Business Doer.">
   <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg">
   <link rel="stylesheet" href="assets/css/styles.css">
@@ -28,7 +28,7 @@
       <div class="admin-header">
         <div>
           <p class="hero-tag">Internal use</p>
-          <h1>Private article panel</h1>
+          <h1>Article panel</h1>
           <p class="admin-lede">Monitor the editorial pipeline without exposing it to the public site. Update each publication status and prep upcoming launches.</p>
         </div>
       </div>
@@ -105,18 +105,26 @@
               <span>Slug</span>
               <input type="text" id="article-slug" name="slug" placeholder="plg-pricing-playbook" required>
             </label>
-            <label>
-              <span>Category</span>
-              <select id="article-category" name="category" required>
-                <option value="">Select...</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Finance">Finance</option>
-                <option value="Revenue">Revenue</option>
-                <option value="Sales">Sales</option>
-                <option value="Operations">Operations</option>
-                <option value="Strategy">Strategy</option>
-                <option value="HR">HR</option>
-              </select>
+            <label class="category-field">
+              <span>Categories</span>
+              <button type="button" class="category-toggle" data-category-toggle aria-expanded="false">
+                Select categories
+              </button>
+              <div class="category-options" id="article-category" role="group" aria-label="Categories" hidden>
+                <label><input type="checkbox" name="categories" value="Marketing"><span>Marketing</span></label>
+                <label><input type="checkbox" name="categories" value="Finance"><span>Finance</span></label>
+                <label><input type="checkbox" name="categories" value="Accounting"><span>Accounting</span></label>
+                <label><input type="checkbox" name="categories" value="Strategy"><span>Strategy</span></label>
+                <label><input type="checkbox" name="categories" value="Market Research"><span>Market Research</span></label>
+                <label><input type="checkbox" name="categories" value="Sales"><span>Sales</span></label>
+                <label><input type="checkbox" name="categories" value="Operations"><span>Operations</span></label>
+                <label><input type="checkbox" name="categories" value="Human Resources"><span>Human Resources</span></label>
+                <label><input type="checkbox" name="categories" value="Product"><span>Product</span></label>
+                <label><input type="checkbox" name="categories" value="Technology"><span>Technology</span></label>
+                <label><input type="checkbox" name="categories" value="AI"><span>AI</span></label>
+                <label><input type="checkbox" name="categories" value="Project Management"><span>Project Management</span></label>
+                <label><input type="checkbox" name="categories" value="Legal"><span>Legal</span></label>
+              </div>
             </label>
             <label>
               <span>Status</span>
@@ -128,7 +136,7 @@
               </select>
             </label>
             <label>
-              <span>Read time (min)</span>
+              <span>Minutes (optional)</span>
               <input type="number" id="article-readtime" name="readTime" min="1" max="60" value="8">
             </label>
             <label>
@@ -238,9 +246,9 @@
     <div class="admin-lock-card">
       <p class="hero-tag">Protected panel</p>
       <h1 id="lock-title">Restricted access</h1>
-      <p class="admin-lede">Enter the team's internal code to unlock the private panel.</p>
+          <p class="admin-lede">Enter the team's internal code to unlock the article panel.</p>
       <form class="admin-lock-form" autocomplete="off">
-        <label for="admin-code">Private code</label>
+        <label for="admin-code">Access code</label>
         <input type="password" id="admin-code" name="password" placeholder="••••••••" autocomplete="current-password" required>
         <button class="btn-primary" type="submit">Unlock</button>
         <p class="lock-status" data-lock-status aria-live="polite"></p>

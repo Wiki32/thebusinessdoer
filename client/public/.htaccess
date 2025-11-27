@@ -1,0 +1,6 @@
+RewriteEngine On
+
+# Force HTTPS and remove www
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\.thebusinessdoer\.com$ [NC]
+RewriteRule ^ https://thebusinessdoer.com%{REQUEST_URI} [L,R=301]

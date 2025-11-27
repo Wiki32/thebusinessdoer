@@ -24,26 +24,18 @@
   </header>
 
   <main>
-    <section class="section" style="margin-top:3rem;">
-      <div class="section-header">
-        <div>
-          <p class="hero-tag">Living library</p>
-          <h1>Ideas ready to implement</h1>
-          <p style="color:var(--muted); max-width:640px;">Every article includes templates, metrics, and watchouts so you can adapt each recommendation to your business.</p>
-        </div>
+    <section class="filter-bar" data-filter-panel aria-label="Filter articles by category">
+      <div class="filter-bar-inner">
+        <div class="filter-chips" data-category-filters></div>
+        <button type="button" class="filter-clear" data-clear-filters aria-disabled="true" disabled>Clear filters</button>
       </div>
+    </section>
 
+    <section class="section">
       <div class="blog-search" role="search">
         <div class="search-row">
           <input type="search" placeholder="Search by keyword, industry, or area..." aria-label="Search articles" data-search>
           <span class="search-meta">Results: <strong data-results-count>0</strong></span>
-        </div>
-        <div class="filter-row" data-filter-panel>
-          <div class="filter-row-head">
-            <p class="filter-label">Filter by category</p>
-            <button type="button" class="filter-clear" data-clear-filters aria-disabled="true" disabled>Clear filters</button>
-          </div>
-          <div class="filter-chips" data-category-filters></div>
         </div>
       </div>
 
