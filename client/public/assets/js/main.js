@@ -66,6 +66,7 @@ const CATEGORY_TRANSLATIONS = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  setupMobileMenu();
   renderDynamicBlogArticles();
   setupArticleSearch();
   setupContactForm();
@@ -75,6 +76,39 @@ document.addEventListener('DOMContentLoaded', () => {
   setupDynamicArticleView();
   setupCookieConsent();
 });
+
+function setupMobileMenu() {
+  const toggle = document.querySelector('[data-menu-toggle]');
+  const menu = document.querySelector('[data-menu]');
+  const overlay = document.querySelector('[data-menu-overlay]');
+  if (!toggle || !menu) return;
+
+  const setOpen = isOpen => {
+    menu.dataset.open = String(isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    if (overlay) {
+      overlay.dataset.open = String(isOpen);
+    }
+    document.body.classList.toggle('menu-open', isOpen);
+  };
+
+  toggle.addEventListener('click', () => {
+    const isOpen = menu.dataset.open === 'true';
+    setOpen(!isOpen);
+  });
+
+  overlay?.addEventListener('click', () => setOpen(false));
+
+  menu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => setOpen(false));
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  });
+}
 
 function renderDynamicBlogArticles() {
   const blogList = document.querySelector('[data-blog-list]');

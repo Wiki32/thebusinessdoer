@@ -107,6 +107,55 @@ body.admin-authenticated > header {
   width:100%;
 }
 
+.navbar-menu {
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  gap:1.5rem;
+  margin-left:1rem;
+  min-width:0;
+}
+
+.navbar-menu nav {
+  justify-content:center;
+}
+
+.navbar-toggle {
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:5px;
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  border:1px solid rgba(0,76,153,0.16);
+  background:var(--white);
+  cursor:pointer;
+  box-shadow:var(--shadow);
+  transition:transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.navbar-toggle:hover,
+.navbar-toggle:focus-visible {
+  transform:translateY(-1px);
+  box-shadow:0 14px 28px rgba(0,25,51,0.16);
+  border-color:rgba(0,76,153,0.24);
+}
+
+.navbar-toggle span {
+  display:block;
+  width:22px;
+  height:2px;
+  background:var(--deep-blue);
+  border-radius:999px;
+}
+
+.navbar-overlay {
+  display:none;
+}
+
 .btn-primary {
   background:var(--accent);
   color:var(--white);
@@ -1572,22 +1621,72 @@ body.admin-locked {
 
 @media (max-width:900px) {
   .navbar {
+    flex-direction:row;
+    align-items:center;
+    gap:0.75rem;
+    padding:0.9rem 1.25rem;
+  }
+
+  .navbar-toggle {
+    display:inline-flex;
+    margin-left:auto;
+    z-index:21;
+  }
+
+  .navbar-menu {
+    position:fixed;
+    top:0;
+    right:0;
+    height:100vh;
+    width:min(320px, 82vw);
+    background:var(--white);
+    box-shadow:-4px 0 30px rgba(0,25,51,0.2);
+    display:flex;
     flex-direction:column;
     align-items:flex-start;
-    gap:0.75rem;
-    padding:1rem 1.25rem;
-  }
-
-  .navbar nav {
-    width:100%;
-    flex-wrap:wrap;
-    justify-content:flex-start;
     gap:1rem;
+    padding:1.25rem 1.25rem 2rem;
+    transform:translateX(105%);
+    transition:transform 0.24s ease;
+    z-index:20;
   }
 
-  .navbar .btn-primary {
+  .navbar-menu[data-open="true"] {
+    transform:translateX(0);
+  }
+
+  .navbar-menu nav {
+    width:100%;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:flex-start;
+    gap:0.9rem;
+  }
+
+  .navbar-menu .btn-primary {
     width:100%;
     text-align:center;
+  }
+
+  .navbar-overlay {
+    display:block;
+    position:fixed;
+    inset:0;
+    background:rgba(0,25,51,0.45);
+    backdrop-filter:blur(2px);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.2s ease;
+    z-index:19;
+  }
+
+  .navbar-overlay[data-open="true"] {
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  body.menu-open {
+    overflow:hidden;
   }
 
   .hero,
