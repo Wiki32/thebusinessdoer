@@ -66,6 +66,7 @@ const CATEGORY_TRANSLATIONS = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+  setupMobileMenu();
   renderDynamicBlogArticles();
   setupArticleSearch();
   setupContactForm();
@@ -75,6 +76,26 @@ document.addEventListener('DOMContentLoaded', () => {
   setupDynamicArticleView();
   setupCookieConsent();
 });
+
+function setupMobileMenu() {
+  const toggle = document.querySelector('[data-menu-toggle]');
+  const menu = document.querySelector('[data-menu]');
+  if (!toggle || !menu) return;
+
+  const setOpen = isOpen => {
+    menu.dataset.open = String(isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  };
+
+  toggle.addEventListener('click', () => {
+    const isOpen = menu.dataset.open === 'true';
+    setOpen(!isOpen);
+  });
+
+  menu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => setOpen(false));
+  });
+}
 
 function renderDynamicBlogArticles() {
   const blogList = document.querySelector('[data-blog-list]');
