@@ -1120,11 +1120,6 @@ function setupDynamicArticleView() {
     readTimeField.textContent = `${article.readTime || 8} min`;
   }
 
-  const updatedField = articleLayout.querySelector('[data-article-updated]');
-  if (updatedField) {
-    updatedField.textContent = formatDateShort(article.updatedAt || article.createdAt);
-  }
-
   const cover = articleLayout.querySelector('[data-article-cover]');
   if (cover) {
     if (article.coverImage) {
