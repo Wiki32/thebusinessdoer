@@ -137,7 +137,10 @@ function renderDynamicBlogArticles() {
 
     const link = document.createElement('a');
     link.className = 'article-card-link';
-    link.href = `article.html?id=${article.id}`;
+    const normalizedSlug = article.slug ? slugify(article.slug) : '';
+    const linkParam = normalizedSlug ? 'slug' : 'id';
+    const linkValue = normalizedSlug || article.id;
+    link.href = `article.html?${linkParam}=${encodeURIComponent(linkValue)}`;
 
     const tag = document.createElement('p');
     tag.className = 'card-tag';
@@ -1115,16 +1118,28 @@ function setupDynamicArticleView() {
 
   const params = new URLSearchParams(window.location.search);
   const articleId = params.get('id');
+  const articleSlug = params.get('slug');
   const previewMode = params.get('preview') === '1' || params.get('preview') === 'true';
   let article = null;
 
+  const findArticle = () => {
+    if (articleSlug) {
+      const foundBySlug = getArticleBySlug(articleSlug);
+      if (foundBySlug) return foundBySlug;
+    }
+    if (articleId) {
+      return getArticleById(articleId);
+    }
+    return null;
+  };
+
   if (previewMode) {
     article = getPreviewArticle();
-    if (!article && articleId) {
-      article = getArticleById(articleId);
+    if (!article) {
+      article = findArticle();
     }
-  } else if (articleId) {
-    article = getArticleById(articleId);
+  } else {
+    article = findArticle();
   }
 
   const emptyState = articleLayout.querySelector('[data-article-empty]');
@@ -1273,6 +1288,12 @@ function removeArticle(id) {
 
 function getArticleById(id) {
   return getArticleLibrary().find(article => article.id === id);
+}
+
+function getArticleBySlug(slug) {
+  const normalized = slugify(slug || '');
+  if (!normalized) return null;
+  return getArticleLibrary().find(article => slugify(article.slug || '') === normalized) || null;
 }
 
 function generateArticleId() {

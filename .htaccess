@@ -1,5 +1,9 @@
 RewriteEngine On
 
+# Redirect legacy /client/public paths to root equivalents on the canonical host
+RewriteCond %{REQUEST_URI} ^/client/public/(.*)$ [NC]
+RewriteRule ^ https://thebusinessdoer.com/%1 [L,R=301]
+
 # Force HTTPS and remove www
 RewriteCond %{HTTPS} !=on [OR]
 RewriteCond %{HTTP_HOST} ^www\.thebusinessdoer\.com$ [NC]

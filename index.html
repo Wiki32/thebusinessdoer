@@ -3,12 +3,127 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="0; url=client/public/index.html">
-  <link rel="canonical" href="client/public/index.html">
-  <title>The Business Doer</title>
+  <title>The Business Doer | Business knowledge hub</title>
+  <meta name="description" content="The Business Doer brings business knowledge together in one hub for anyone interested in concepts, strategies, cases, and analysis.">
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg">
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-  <p>Redirecting to <a href="client/public/index.html">client/public/index.html</a>...</p>
-  <script>location.replace('client/public/index.html');</script>
+  <header>
+    <div class="navbar">
+      <a class="navbar-brand" href="index.html">
+        <span>The Business Doer</span>
+      </a>
+      <button class="navbar-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" data-menu-toggle>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="navbar-menu" data-menu data-open="false">
+        <nav aria-label="Main menu">
+          <a href="index.html" aria-current="page">Home</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <a class="btn-primary" href="coming-soon.html">Start My Business Plan</a>
+      </div>
+    </div>
+    <div class="navbar-overlay" data-menu-overlay data-open="false"></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="hero-tag">Business knowledge hub</p>
+        <h1 class="hero-title">The hub to understand the language of business.</h1>
+        <p>The Business Doer brings the essentials of business into one hub. Anyone curious can find concepts, strategies, business cases, and types of analysis explained clearly, without assuming your experience.</p>
+      </div>
+      <div class="hero-card">
+        <p class="card-tag">What you'll find</p>
+        <h3 class="card-title">Clear definitions, context, and applications.</h3>
+        <p>Our goal is to put business knowledge within everyone's reach: a library that organizes theory, adds context, and points to where to go deeper.</p>
+        <ul style="margin-top:1rem; color:var(--muted); list-style:none; display:grid; gap:0.4rem;">
+          <li>✔ Key concepts explained in plain language</li>
+          <li>✔ Strategies, frameworks, and decisions summarized</li>
+          <li>✔ Everything from strategy to execution in one place</li>
+          <li>✔ References to keep digging</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+          <div class="section-header">
+            <div>
+              <p class="hero-tag">Featured articles</p>
+              <h2>Curated articles so you speak the language of business.</h2>
+            </div>
+            <a class="btn-primary" href="blog.html">Browse articles</a>
+          </div>
+          <div class="section-grid">
+            <article class="card" style="text-align:center;">
+              <p class="card-tag">Coming soon</p>
+              <h3 class="card-title">No featured articles yet.</h3>
+              <p style="color:var(--muted);">Use the article panel to create the first article and it will appear here automatically.</p>
+            </article>
+          </div>
+        </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <p class="hero-tag">Business areas</p>
+          <h2>From the funnel to the boardroom.</h2>
+        </div>
+      </div>
+      <div class="section-grid">
+        <div class="card">
+          <h3 class="card-title">Marketing & Growth</h3>
+          <p>Concepts like CAC, LTV, share of voice, or incrementality translated into practical language.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Finance & Strategy</h3>
+          <p>How to understand valuation, cap tables, scenarios, and sensitivity without drowning in spreadsheets.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Sales & Revenue Operations</h3>
+          <p>Definitions for pipeline coverage, win rate, deal desk, and the team's key roles.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Productivity & Operations</h3>
+          <p>Glossary for OKRs, SLAs, internal NPS, and rituals that keep the organization aligned.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">People & HR</h3>
+          <p>Foundations on hiring, org design, performance, and rituals to build healthy teams.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Product & Technology</h3>
+          <p>How in-house teams ship: discovery, delivery, technical debt, and product operations.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Project Management</h3>
+          <p>Scoping, prioritization, risk tracking, and stakeholder updates to keep projects on track.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Legal & Compliance</h3>
+          <p>Basics on contracts, data privacy, risk mitigation, and governance for growing companies.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <p>© <span id="current-year"></span> The Business Doer · Built for people who drive the business.</p>
+      <div class="footer-links">
+        <a href="terms.html">Terms and Conditions</a>
+        <a href="aviso-legal.html">Legal Notice</a>
+        <a href="politica-cookies.html">Cookie Policy</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
